@@ -1,4 +1,5 @@
 import React from 'react';
+import './Accordion.css'
 
 class Accordion extends React.Component {
   static defaultProps = {
@@ -6,28 +7,32 @@ class Accordion extends React.Component {
   };
 
   state = {
-    activeSection : null,
+    activeSectionIndex : null,
   }
 
-  handleClick = (sectionIndex) => {
-    this.setState({activeSection : sectionIndex})
+  handleSetActiveSection = (sectionIndex) => {
+    this.setState({activeSectionIndex : sectionIndex})
   }
 
-  renderItem(section, idx, activeSection){
+  renderItem(section, idx, activeSectionIndex){
     return(
-      <li>
-        <button onClick={this.handleClick()}>{}</button>
+      <li className='Accordion___item' key={idx}>
+        <button type ='button' 
+        onClick={() => this.handleSetActiveSection(idx)}>
+        {section.title}
+        </button>
+        {(activeSectionIndex === idx) && <p>{section.content}</p>}
       </li>
     )
   }
 
   render(){
-    const {activeSection} = this.state
+    const {activeSectionIndex} = this.state
     const {sections} = this.props
     return (
       <ul className='Accordion'>
        {sections.map((section, idx) =>
-        this.renderItem(section, idx, activeSection)
+        this.renderItem(section, idx, activeSectionIndex)
         )}
       </ul>
     )
